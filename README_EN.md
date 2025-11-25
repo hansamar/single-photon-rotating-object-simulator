@@ -27,7 +27,10 @@ The application runs entirely in the browser, utilizing **Angular** for a modern
 * **Photon Statistical Model**: Simulates the detection process of a Single-Photon Avalanche Diode (SPAD), including Poisson-distributed signal photon arrival times and background noise.
 * **Dynamic Motion Simulation**: Precisely calculates the rotation angle ($\omega$) and depth variation ($Z$) of the propeller for every time slice.
 * **Noise Control**: Supports customizable environmental **Noise Ratio** and average signal photon counts.
-
+* **Detector Specifications**:
+    * **Integration Time per Frame**: 20 µs.
+    * **Time-to-Digital Converter (TDC) Resolution**: 256 ps (0.256 ns).
+      
 ### 2. Interactive 3D Scene
 * **Visual Configuration**: Integrated Three.js view to intuitively visualize the relative position between the detector and the rotating target.
 * **Drag Interaction**: You can directly drag the propeller platform in the 3D scene to adjust the detection **Distance**.
