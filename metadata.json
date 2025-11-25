@@ -1,0 +1,5 @@
+{
+  "name": "Drone Propeller ToF Simulator",
+  "description": "An application to generate synthetic single-photon Time-of-Flight (ToF) data for a rotating drone propeller. Upload a propeller image, set simulation parameters like RPM and resolution, and generate and visualize the resulting photon data.",
+  "requestFramePermissions": []
+}

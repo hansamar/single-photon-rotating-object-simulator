@@ -1,0 +1,97 @@
+<div class="min-h-screen bg-gray-950 text-gray-200 p-4 sm:p-6 lg:p-8">
+  <div class="max-w-7xl mx-auto">
+    <header class="mb-8 text-center">
+      <h1 class="text-4xl font-bold text-cyan-400">Drone Propeller ToF Simulator</h1>
+      <p class="mt-2 text-lg text-gray-400">Generate synthetic single-photon data from a rotating propeller image.</p>
+    </header>
+
+    <main class="flex flex-col gap-8">
+      <!-- Row 1: Upload & Verify (Full Width) -->
+      <div class="bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
+        <h2 class="text-2xl font-semibold mb-4 text-white border-b border-gray-700 pb-2">1. Upload & Verify Image</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Original Image -->
+          <div>
+            <h3 class="text-lg font-medium text-center mb-2 text-gray-300">Original</h3>
+            <div class="w-full h-80 border-2 border-dashed border-gray-600 rounded-lg flex items-center justify-center bg-gray-800 relative cursor-pointer" (click)="triggerFileUpload()">
+              @if (uploadedImageUrl()) {
+                <img [src]="uploadedImageUrl()" alt="Uploaded Propeller" class="max-w-full max-h-full object-contain p-2" />
+              } @else {
+                <div class="text-center text-gray-400 p-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                  </svg>
+                  <p class="mt-2">Click to upload an image</p>
+                  <p class="text-xs">(PNG with transparent background recommended)</p>
+                </div>
+              }
+            </div>
+          </div>
+           <!-- Binarized Image -->
+          <div>
+             <h3 class="text-lg font-medium text-center mb-2 text-gray-300">Extracted Shape</h3>
+             <div class="w-full h-80 border-2 border-gray-600 rounded-lg flex items-center justify-center bg-gray-800 relative">
+                @if (binarizedImageUrl()) {
+                  <img [src]="binarizedImageUrl()" alt="Binarized Propeller" class="max-w-full max-h-full object-contain p-2" />
+                } @else {
+                   <div class="text-center text-gray-500 p-4">
+                      <p>Extraction result will appear here.</p>
+                   </div>
+                }
+             </div>
+          </div>
+        </div>
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" class="hidden" />
+      </div>
+
+      <!-- Row 2: Parameters & 3D Scene -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-1">
+          <app-parameter-controls 
+              [isDisabled]="isLoading()" 
+              [params]="params()"
+              (paramsChange)="params.set($event)"
+              (generate)="onGenerate()">
+          </app-parameter-controls>
+        </div>
+        <div class="lg:col-span-2 bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700 min-h-[500px] flex flex-col">
+          <h2 class="text-2xl font-semibold mb-4 text-white border-b border-gray-700 pb-2 shrink-0">3. 3D Scene Setup</h2>
+          <app-scene 
+            class="flex-1 min-h-0"
+            [propellerImage]="uploadedImage()"
+            [rpm]="params().rpm"
+            [distance]="params().distance"
+            (distanceChange)="onDistanceChange($event)">
+          </app-scene>
+        </div>
+      </div>
+
+      <!-- Row 3: Visualization Results -->
+      <div class="bg-gray-900 p-6 rounded-lg shadow-lg border border-gray-700">
+        <h2 class="text-2xl font-semibold mb-4 text-white border-b border-gray-700 pb-2">4. Visualization Results</h2>
+        @if (isLoading()) {
+          <div class="flex flex-col items-center justify-center h-full min-h-[400px]">
+            <div class="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin"></div>
+            <p class="mt-4 text-lg">Simulation in progress...</p>
+            <div class="w-full bg-gray-700 rounded-full h-2.5 mt-4">
+              <div class="bg-cyan-500 h-2.5 rounded-full" [style.width.%]="progress()"></div>
+            </div>
+            <p class="mt-2 text-sm text-gray-400">{{ progress() }}% Complete</p>
+          </div>
+        } @else if (simulationResult(); as res) {
+          <div class="flex flex-col gap-6">
+            <app-visualization [data]="res.visualizationData"></app-visualization>
+            <button (click)="onDownload()" class="mt-4 w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+              Download .bin File
+            </button>
+          </div>
+        } @else {
+          <div class="flex items-center justify-center h-full min-h-[400px] text-gray-500">
+            <p>Set parameters and click "Generate Data" to see results.</p>
+          </div>
+        }
+      </div>
+    </main>
+  </div>
+</div>
