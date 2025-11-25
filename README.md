@@ -56,8 +56,8 @@
 
 1.  **克隆仓库**
     ```bash
-    git clone [https://github.com/your-username/rotating-object-lidar-sim.git](https://github.com/your-username/rotating-object-lidar-sim.git)
-    cd rotating-object-lidar-sim
+    git clone [https://github.com/hansamar/single-photon-rotating-object-simulator.git](https://github.com/hansamar/single-photon-rotating-object-simulator.git)
+    cd single-photon-rotating-object-simulator
     ```
 
 2.  **安装依赖**
