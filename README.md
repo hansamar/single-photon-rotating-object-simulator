@@ -10,6 +10,10 @@
 
 > **关键词**: Single-photon Imaging, SPAD, LiDAR, ToF, Drone Propeller, Synthetic Data, Computer Vision, Rotating Object, Motion Artifacts.
 
+<img width="1686" height="650" alt="Image" src="https://github.com/user-attachments/assets/faede718-e521-4599-aabe-5083867741f2" />
+<img width="1410" height="1078" alt="Image" src="https://github.com/user-attachments/assets/ea10f8be-9264-48a6-9529-aea6432965e4" />
+<img width="1415" height="679" alt="Image" src="https://github.com/user-attachments/assets/ed5874a1-c0b7-4760-a9ec-f2cbc9f5af70" />
+
 ## 📖 项目简介 (Introduction)
 
 这是一个基于 Web 的**合成数据生成器**，专为研究**高速旋转目标**（如无人机螺旋桨）的**单光子飞行时间（Time-of-Flight, ToF）**成像而设计。
