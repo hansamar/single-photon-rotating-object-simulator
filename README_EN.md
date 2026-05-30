@@ -1,102 +1,98 @@
 # Rotating Object Single-Photon LiDAR/ToF Simulator
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 ![Angular](https://img.shields.io/badge/Angular-21.0-dd0031.svg)
 ![Three.js](https://img.shields.io/badge/Three.js-0.165-black.svg)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.8-3178c6.svg)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178c6.svg)
 
 **[English](./README_EN.md) | [中文](./README.md)**
 
-> **Keywords**: Single-photon Imaging, SPAD, LiDAR, ToF, Drone Propeller, Synthetic Data, Computer Vision, Rotating Object, Motion Artifacts.
+> Keywords: Single-photon Imaging, SPAD, LiDAR, ToF, Drone Propeller, Synthetic Data, Computer Vision, Rotating Object, Motion Artifacts.
 
-<img width="1686" height="650" alt="Image" src="https://github.com/user-attachments/assets/faede718-e521-4599-aabe-5083867741f2" />
-<img width="1410" height="1078" alt="Image" src="https://github.com/user-attachments/assets/ea10f8be-9264-48a6-9529-aea6432965e4" />
-<img width="1415" height="679" alt="Image" src="https://github.com/user-attachments/assets/ed5874a1-c0b7-4760-a9ec-f2cbc9f5af70" />
+<img width="1686" height="650" alt="Simulator overview" src="https://github.com/user-attachments/assets/faede718-e521-4599-aabe-5083867741f2" />
+<img width="1410" height="1078" alt="Simulation controls" src="https://github.com/user-attachments/assets/ea10f8be-9264-48a6-9529-aea6432965e4" />
+<img width="1415" height="679" alt="Simulation results" src="https://github.com/user-attachments/assets/ed5874a1-c0b7-4760-a9ec-f2cbc9f5af70" />
 
-## 📖 Introduction
+## Introduction
 
-This is a web-based **synthetic data generator** specifically designed for researching **Single-Photon Time-of-Flight (ToF)** imaging of **high-speed rotating objects** (such as drone propellers).
+This browser-based synthetic data generator supports research on single-photon Time-of-Flight (ToF) imaging of high-speed rotating objects such as drone propellers.
 
-The project aims to address the challenges of imaging dynamic targets under low photon flux conditions (e.g., motion artifacts, Doppler effect blurring). Through physically-based photon-level simulation, it generates realistic ToF data containing **Poisson Noise** and environmental background noise. It is suitable for **Computer Vision algorithm training**, **Depth Sensing research**, and the development of **Motion Artifact Correction** algorithms.
+The application extracts a target shape from an uploaded blade image, simulates rotational motion, Poisson-distributed signal photons, and background noise, and exports raw `.bin` data for downstream analysis in MATLAB or Python. Angular provides the user interface, Three.js renders the 3D experimental scene, and a Web Worker runs the compute-intensive simulation.
 
-The application runs entirely in the browser, utilizing **Angular** for a modern UI, **Three.js** for 3D scene modeling, and **Web Workers** for high-performance parallel physical computations.
+## Project Status
 
-## ✨ Key Features
+The current release is `v0.1.0`. It is intended for proof-of-concept studies, algorithm development, and reproducible experimental exploration.
 
-### 1. Physically-based Simulation
-* **Photon Statistical Model**: Simulates the detection process of a Single-Photon Avalanche Diode (SPAD), including Poisson-distributed signal photon arrival times and background noise.
-* **Dynamic Motion Simulation**: Precisely calculates the rotation angle ($\omega$) and depth variation ($Z$) of the propeller for every time slice.
-* **Noise Control**: Supports customizable environmental **Noise Ratio** and average signal photon counts.
-* **Detector Specifications**:
-    * **Integration Time per Frame**: 20 µs.
-    * **Time-to-Digital Converter (TDC) Resolution**: 256 ps (0.256 ns).
-      
+This project is at an early stage. The current model is a simplified research simulator, not a calibrated hardware digital twin, and should not be used for engineering performance claims. See [ROADMAP.md](./ROADMAP.md) for planned work.
+
+## Key Features
+
+### 1. Photon Simulation
+
+- Simulates Single-Photon Avalanche Diode (SPAD) detection.
+- Generates signal photons using Poisson statistics and adds configurable background noise.
+- Computes blade rotation angle and relative depth for each time slice.
+- Uses a `20 µs` integration time per frame and a `256 ps` Time-to-Digital Converter (TDC) resolution.
+
 ### 2. Interactive 3D Scene
-* **Visual Configuration**: Integrated Three.js view to intuitively visualize the relative position between the detector and the rotating target.
-* **Drag Interaction**: You can directly drag the propeller platform in the 3D scene to adjust the detection **Distance**.
 
-### 3. Comprehensive Parameter Controls
-* **Motion Parameters**: Rotational Speed (RPM 100-10000).
-* **Sensor Parameters**: Resolution (64x64, 128x128, 256x256), Field of View (FOV).
-* **Acquisition Parameters**: Number of Frames (nFrames), Average Photons per Frame, Short-term Integration Frames.
+- Uses Three.js to show the relative positions of the detector and rotating target.
+- Supports dragging the target platform in the 3D scene to adjust detection distance.
 
-### 4. Real-time Visualization & Export
-* **Multi-View Comparison**: Simultaneously displays **Accumulated Photon Counts**, **Ground Truth Signal**, and **Short-Term Integration**.
-* **Data Export**: Supports one-click download of the generated raw binary data (`.bin`) for easy import into MATLAB or Python for further processing.
+### 3. Parameter Controls
 
-## 🛠️ Tech Stack
+- Motion: rotational speed from `RPM 100-10000`.
+- Sensor: `64x64`, `128x128`, or `256x256` resolution and Field of View (FOV).
+- Acquisition: frame count, average photons per frame, background noise ratio, and short-term integration frames.
 
-* **Frontend Framework**: [Angular 18+](https://angular.io/) (Standalone Components, Signals)
-* **3D Graphics**: [Three.js](https://threejs.org/)
-* **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-* **Computation**: Web Workers (Used for running intensive Monte Carlo simulation loops in the background)
-* **Build Tool**: Angular CLI / Vite
+### 4. Visualization and Data Export
 
-## 🚀 Getting Started
+- Displays accumulated photon counts, ground-truth signal, and short-term integration views.
+- Downloads raw binary data as a `.bin` file.
 
-### Prerequisites
-* Node.js (v18 or higher recommended)
-* npm
+## Getting Started
 
-### Installation Steps
+### Requirements
 
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/your-username/rotating-object-lidar-sim.git](https://github.com/your-username/rotating-object-lidar-sim.git)
-    cd rotating-object-lidar-sim
-    ```
+- Node.js `20.19+`, `22.12+`, or `24+`
+- npm
 
-2.  **Install dependencies**
-    ```bash
-    npm install
-    ```
+### Install and Run
 
-3.  **Start the development server**
-    ```bash
-    npm run dev
-    ```
+```bash
+git clone https://github.com/hansamar/single-photon-rotating-object-simulator.git
+cd single-photon-rotating-object-simulator
+npm install
+npm run dev
+```
 
-4.  **Access the application**
-    Open your browser and navigate to `http://localhost:3000` (or the port shown in your terminal).
+Open `http://localhost:3000` in a browser.
 
-## 📖 Usage Guide
+### Build Check
 
-1.  **Upload & Verify**:
-    * Upload an image of a propeller blade (images with a light background and dark blade are recommended).
-    * The system will automatically binarize and extract the geometric shape of the blade.
+```bash
+npm run build
+```
 
-2.  **Set Parameters**:
-    * Adjust **RPM** and **Distance**.
-    * Set **Sensor Resolution** and **Noise Ratio**.
-    * *Note: Excessively high resolutions and frame counts may consume significant memory.*
+## Usage
 
-3.  **3D Scene Preview**:
-    * Observe the experimental setup in the 3D view.
-    * You can hold the left mouse button to rotate the view, the right button to pan, or directly drag the blade model to adjust the distance.
+1. Upload a blade image. A dark blade on a light background is recommended.
+2. Check the extracted binary shape.
+3. Adjust RPM, distance, resolution, FOV, frame count, and noise parameters.
+4. Inspect the experimental configuration in the 3D scene.
+5. Click `Generate Data`.
+6. Review the visualizations and use `Download .bin File` to export the raw data.
 
-4.  **Generate Data**:
-    * Click the "Generate Data" button. The simulation will run in a background Web Worker without freezing the interface.
+High resolutions and large frame counts can significantly increase memory use.
 
-5.  **Results Analysis & Download**:
-    * Once the simulation is complete, view the visualization results.
-    * Click "Download .bin File" to save the raw data.
+## Contributing
+
+Issue reports, documentation improvements, and well-explained simulation model improvements are welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) before contributing.
+
+## Changelog
+
+See [CHANGELOG.md](./CHANGELOG.md) for release history.
+
+## License
+
+This project is available under the [MIT License](./LICENSE).

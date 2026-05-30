@@ -139,7 +139,7 @@ export class AppComponent {
     if (!result || !result.binaryData) {
       return;
     }
-    const blob = new Blob([result.binaryData], { type: 'application/octet-stream' });
+    const blob = new Blob([result.binaryData.buffer as ArrayBuffer], { type: 'application/octet-stream' });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
